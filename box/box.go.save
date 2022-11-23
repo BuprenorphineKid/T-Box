@@ -1,0 +1,145 @@
+package box
+
+import(
+  "strings"
+  "strconv"
+)
+
+type signal struct{}
+
+type Box struct {
+  Height int
+  Width int
+  lines []string
+  shape string
+  style string
+  Area int
+} 
+
+func NewBox(h int, w int, s string) *Box {
+  var b Box
+  b.Height = h
+  b.Width = w
+
+  b.Area = (h * w)
+  
+  b.lines = make([]string, 0, b.Area)
+
+  b.style = s
+  b.Build()
+
+  return &b
+}
+
+func (b *Box) OffsetX(x int) {
+  lines := strings.Split(b.shape, "\n")
+  dummy := " "
+  
+  for _, _ := range b.lines {
+    for k := 0; k == x; k++ {
+      dummy += " "
+    }
+  }
+
+  b.shape = strings.Join(lines, "\n")
+}
+
+func (b *Box) OffsetY(y int) {
+  print("\033[" + strconv.FormatInt(int64(y), 10) + ";0H")
+}
+
+func (b *Box) thin() {
+  for i := 0; i <= b.Height; i++ {
+    b.lines = append(b.lines, "|")
+    
+    if i == 0 {
+
+      for j := 0; j <= b.Width; j++ {
+        b.lines = append(b.lines,"⁻")
+      }
+        b.lines = append(b.lines, "|")
+        b.lines = append(b.lines, "\n")
+    } else if i == b.Height {
+      for r := 0; r <= b.Width; r++ {  
+        b.lines = append(b.lines, "_")
+      }
+        b.lines = append(b.lines, "|")
+        b.lines = append(b.lines, "\n")
+    } else {
+      for r := 0; r <= b.Width; r++ {  
+        b.lines = append(b.lines, " ")
+      }
+        b.lines = append(b.lines, "|")
+        b.lines = append(b.lines, "\n")
+    }
+  }
+}
+
+func (b *Box) thick() {
+  for i := 0; i <= b.Height; i++ {
+    b.lines = append(b.lines, "|│")
+    
+    if i == 0 {
+
+      for j := 0; j <= b.Width; j++ {
+        b.lines = append(b.lines,"Ξ")
+      }
+        b.lines = append(b.lines, "│|")
+        b.lines = append(b.lines, "\n")
+    } else if i == b.Height {
+      for r := 0; r <= b.Width; r++ {  
+        b.lines = append(b.lines, "Ξ")
+      } 
+        b.lines = append(b.lines, "│|")
+        b.lines = append(b.lines, "\n")
+    } else {
+      for r := 0; r <= b.Width; r++ {  
+        b.lines = append(b.lines, " ")
+      }
+        b.lines = append(b.lines, "│|")
+        b.lines = append(b.lines, "\n")
+    }
+  }
+}
+
+func (b *Box) chain() {
+  for i := 0; i <= b.Height; i++ {
+    b.lines = append(b.lines, "├│┤")
+    
+    if i == 0 {
+
+      for j := 0; j <= b.Width; j++ {
+        b.lines = append(b.lines,"┼")
+      } 
+        b.lines = append(b.lines, "├│┤")
+        b.lines = append(b.lines, "\n")
+    } else if i == b.Height {
+      for r := 0; r <= b.Width; r++  {
+        b.lines = append(b.lines, "┼")
+      }
+        b.lines = append(b.lines, "├│┤")
+        b.lines = append(b.lines, "\n")
+    } else {
+      for r := 0; r <= b.Width; r++ {
+        b.lines = append(b.lines, " ")
+      }
+        b.lines = append(b.lines, "├│┤")
+        b.lines = append(b.lines, "\n")
+    }
+  }
+}
+
+func (b *Box) Build() {
+  switch {
+  case b.style == "thin":
+    b.thin()
+  case b.style == "thick":
+    b.thick()
+  case b.style == "chain":
+    b.chain()
+  }
+}
+
+func (b Box) Show() {
+  println(b.shape)
+}
