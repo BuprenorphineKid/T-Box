@@ -17,6 +17,15 @@ type Box struct {
 	Area   int
 }
 
+func SaveCursor() {
+  print("\0337")
+}
+
+
+func RestoreCursor() {
+  print("\0338")
+}
+
 func NewBox(h int, w int, s string) *Box {
 	var b Box
 	b.Height = h
@@ -43,6 +52,7 @@ func (b *Box) OffsetX(x int) {
 
 func (b *Box) OffsetY(y int) {
 	print("\033[" + strconv.FormatInt(int64(y), 10) + ";0H")
+	
 }
 
 func (b *Box) Build() {

@@ -7,6 +7,8 @@ import (
 )
 
 func main() {
+  box.SaveCursor()
+  
 	args := os.Args[1:]
 
 	h, _ := strconv.ParseInt(args[0], 0, 0)
@@ -31,4 +33,6 @@ func main() {
 	b.OffsetY(int(y))
 
 	b.Show()
+
+	box.RestoreCursor()
 }
