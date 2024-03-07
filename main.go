@@ -1,9 +1,9 @@
 package main
 
 import (
+	"github.com/BuprenorphineKid/tbox/box"
 	"os"
 	"strconv"
-	"tbox/box"
 )
 
 var term box.Terminal = *box.NewTerminal()
